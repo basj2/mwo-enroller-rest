@@ -41,5 +41,11 @@ public class ParticipantService {
 		session.delete(participant);
 		transaction.commit();
 	}
+	
+	public void changePassword(Participant participant, String password) {
+		Transaction transaction = this.session.beginTransaction();
+		participant.setPassword(password);
+		transaction.commit();
+	}
 
 }
