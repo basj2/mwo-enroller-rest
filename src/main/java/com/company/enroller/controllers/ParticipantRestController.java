@@ -32,11 +32,12 @@ public class ParticipantRestController {
 	public ResponseEntity<?> getParticipant(@PathVariable("id") String login) {
 		Participant participant = participantService.findByLogin(login);
 		if (participant == null) {
-			return new ResponseEntity<Collection<Participant>>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<Participant>(HttpStatus.NOT_FOUND);
 		}
 
 		return new ResponseEntity<Participant>(participant, HttpStatus.OK);
 	}
+	
 
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public ResponseEntity<?> registerParticipant(@RequestBody Participant participant) {
@@ -57,7 +58,7 @@ public class ParticipantRestController {
 	public ResponseEntity<?> deleteParticipant(@PathVariable("id") String login) {
 		Participant participant = participantService.findByLogin(login);
 		if (participant == null) {
-			return new ResponseEntity<Collection<Participant>>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<Participant>(HttpStatus.NOT_FOUND);
 		}
 		participantService.delete(participant);
 
@@ -65,12 +66,12 @@ public class ParticipantRestController {
 		// return new ResponseEntity<Participant>(participant, HttpStatus.NO_CONTENT);
 	}
 	
-	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/{id}/changePassword", method = RequestMethod.POST)
 
 	public ResponseEntity<?> changePassword(@PathVariable("id") String login, @RequestBody String password) {
 		Participant participant = participantService.findByLogin(login);
 		if (participant == null) {
-			return new ResponseEntity<Collection<Participant>>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<Participant>(HttpStatus.NOT_FOUND);
 		}
 		participantService.changePassword(participant, password);
 

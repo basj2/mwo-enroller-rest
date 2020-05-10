@@ -1,5 +1,6 @@
 package com.company.enroller.model;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Meeting {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
 	@Column
@@ -56,9 +57,9 @@ public class Meeting {
 		return date;
 	}
 
-	public void setId(long id) {
-		this.id = id;
-	}
+	// public void setId(long id) {
+	// this.id = id;
+	// }
 
 	public void setTitle(String title) {
 		this.title = title;
@@ -73,7 +74,9 @@ public class Meeting {
 	}
 
 	public void addParticipant(Participant participant) {
-		this.participants.add(participant);
+		if (!participants.contains(participant)) {
+			this.participants.add(participant);
+		}
 	}
 
 	public void removeParticipant(Participant participant) {
