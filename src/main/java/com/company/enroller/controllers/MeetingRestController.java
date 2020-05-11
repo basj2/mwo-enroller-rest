@@ -31,13 +31,13 @@ public class MeetingRestController {
 		Collection<Meeting> meetings = meetingService.getAll();
 		return new ResponseEntity<Collection<Meeting>>(meetings, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/title", method = RequestMethod.GET)
 	public ResponseEntity<?> getMeetingSorderedByTitle() {
 		Collection<Meeting> meetings = meetingService.getAllOrderedByTitle();
 		return new ResponseEntity<Collection<Meeting>>(meetings, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/search/title/{search}", method = RequestMethod.GET)
 	public ResponseEntity<?> searchByTitle(@PathVariable("search") String search) {
 		Collection<Meeting> meetings = meetingService.searchByTitle(search);
@@ -49,10 +49,10 @@ public class MeetingRestController {
 		Collection<Meeting> meetings = meetingService.searchByDescription(search);
 		return new ResponseEntity<Collection<Meeting>>(meetings, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/filter/participant/{login}", method = RequestMethod.GET)
-	public ResponseEntity<?> getWithParticipant(@PathVariable("login") String login) {
-		Collection<Meeting> meetings = meetingService.getWithParticipant(login);
+	public ResponseEntity<?> searchByParticipant(@PathVariable("login") String login) {
+		Collection<Meeting> meetings = meetingService.searchByParticipant(login);
 		return new ResponseEntity<Collection<Meeting>>(meetings, HttpStatus.OK);
 	}
 
@@ -85,14 +85,14 @@ public class MeetingRestController {
 			return new ResponseEntity<>("Meeting not found.", HttpStatus.NOT_FOUND);
 		}
 		if (meetingService.getParticipants(meeting).contains(participant)) {
-		
-		 return new ResponseEntity<>("Participant already added.", HttpStatus.NOT_FOUND);
+
+			return new ResponseEntity<>("Participant already added.", HttpStatus.NOT_FOUND);
 
 		}
 		if (participant == null) {
 			return new ResponseEntity<>("Participant not found.", HttpStatus.NOT_FOUND);
 		}
-		
+
 		meetingService.addParticipant(meeting, participant);
 
 		return new ResponseEntity<Collection<Participant>>(meeting.getParticipants(), HttpStatus.CREATED);
@@ -118,7 +118,7 @@ public class MeetingRestController {
 		return new ResponseEntity<Meeting>(meeting, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/{id}/changeTitle", method = RequestMethod.POST)
+	@RequestMapping(value = "/{id}/changetitle", method = RequestMethod.POST)
 	public ResponseEntity<?> changeTitle(@PathVariable("id") long id, @RequestBody String title) {
 		Meeting meeting = meetingService.findById(id);
 		if (meeting == null) {
@@ -129,7 +129,7 @@ public class MeetingRestController {
 		return new ResponseEntity<Meeting>(meeting, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/{id}/changeDescription", method = RequestMethod.POST)
+	@RequestMapping(value = "/{id}/changedescription", method = RequestMethod.POST)
 	public ResponseEntity<?> changeDescription(@PathVariable("id") long id, @RequestBody String description) {
 		Meeting meeting = meetingService.findById(id);
 		if (meeting == null) {
@@ -140,7 +140,7 @@ public class MeetingRestController {
 		return new ResponseEntity<Meeting>(meeting, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/{id}/changeDate", method = RequestMethod.POST)
+	@RequestMapping(value = "/{id}/changedate", method = RequestMethod.POST)
 	public ResponseEntity<?> changeDate(@PathVariable("id") long id, @RequestBody String date) {
 		Meeting meeting = meetingService.findById(id);
 		if (meeting == null) {
@@ -159,14 +159,13 @@ public class MeetingRestController {
 		if (meeting == null) {
 			return new ResponseEntity<>("Meeting not found.", HttpStatus.NOT_FOUND);
 		}
-		if (!meetingService.getParticipants(meeting).contains(participant)) {
-		
-		 return new ResponseEntity<>("Participant not added.", HttpStatus.NOT_FOUND);
-
-		}
 		if (participant == null) {
 			return new ResponseEntity<>("Participant not found.", HttpStatus.NOT_FOUND);
 		}
+		if (!meetingService.getParticipants(meeting).contains(participant)) {
+			return new ResponseEntity<>("Participant not added.", HttpStatus.NOT_FOUND);
+		}
+
 		meetingService.deleteParticipant(meeting, participant);
 
 		return new ResponseEntity<Collection<Participant>>(meeting.getParticipants(), HttpStatus.OK);

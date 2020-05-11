@@ -68,7 +68,7 @@ public class ParticipantRestController {
 	
 	@RequestMapping(value = "/{id}/changePassword", method = RequestMethod.POST)
 
-	public ResponseEntity<?> changePassword(@PathVariable("id") String login, @RequestBody String password) {
+	public ResponseEntity<?> changepassword(@PathVariable("id") String login, @RequestBody String password) {
 		Participant participant = participantService.findByLogin(login);
 		if (participant == null) {
 			return new ResponseEntity<Participant>(HttpStatus.NOT_FOUND);
